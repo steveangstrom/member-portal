@@ -7,8 +7,22 @@
   Author URI:http://pheriche.com
 
  */
+if ( ! defined( 'ABSPATH' ) ) { exit;} // Exit if accessed directly.
+//error_reporting(E_ALL);
 
-include_once( 'includes/learning-portal-page.php' );
+//include_once( 'includes/learning-portal-page.php' );// is a content apender// phased out in favour of template
+
+if ( file_exists( dirname( __FILE__ ) . '/includes/cmb2/init.php' ) ) {
+	require_once 'includes/cmb2/init.php';
+} else {
+	add_action( 'admin_notices', 'cmb2_memberportal_plugin_missing_cmb2' );
+}
+
+if ( file_exists( dirname( __FILE__ ) . 'includes/CMB2-grid/Cmb2GridPlugin.php' ) ) {
+	require_once 'includes/CMB2-grid/Cmb2GridPlugin.php';
+} else {
+	add_action( 'admin_notices', 'cmb2_memberportal_plugin_missing_cmb2' );
+}
 
 add_action( 'init', 'pher_portal_init', 0 );
 function pher_portal_init(){
@@ -26,7 +40,11 @@ function pher_portal_adminstyles() {
 }
 
 
-
+function cmb2_memberportal_plugin_missing_cmb2() { ?>
+<div class="error">
+	<p><?php _e( 'Plugin is missing CMB2!' ); ?></p>
+</div>
+<?php }
 
 
 function legacyalert_acf_notice() {
@@ -169,6 +187,7 @@ $public_files->add_field( array(
 
 
 	  //Create a default grid
+		/*
 	$cmb2Grid = new \Cmb2Grid\Grid\Cmb2Grid($cmb_files);
 	$cmb2GroupGrid   = $cmb2Grid->addCmb2GroupGrid('linkgroup');
 	$row             = $cmb2GroupGrid->addRow();
@@ -178,7 +197,7 @@ $public_files->add_field( array(
 		$cmb2GroupGrid // Can be $group_field_id also
 	));
 
-/********** now the public link grid **************************/
+# now the public link grid *
 
 	$publicgroup_field_id  = $public_files->add_field(array(
                 'id'         => 'publiclinkgroup',
@@ -198,7 +217,7 @@ $public_files->add_field( array(
 		'type' => 'text_url',
 		    'attributes'  => array(
        		 'placeholder' => '',)
-	) );
+	));
 
 	$pub_gfield2=	$public_files->add_group_field('publiclinkgroup', array(
 		'name' => 'Link Text',
@@ -206,7 +225,7 @@ $public_files->add_field( array(
 		'id'   => 'public_link_text',
 		'type' => 'text',
 
-	) );
+	));
 
 	$cmb2Grid_public = new \Cmb2Grid\Grid\Cmb2Grid($public_files);
 	$cmb2GroupGrid_public   = $cmb2Grid_public->addCmb2GroupGrid('publiclinkgroup');
