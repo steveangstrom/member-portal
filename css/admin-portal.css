@@ -1,0 +1,51 @@
+.cmb-type-file-list{
+	/*background:#f00;*/
+}
+#member_resources{background:#e5e5e5;border:1px solid #ea4646;}
+#public_resources{background:#e5e5e5;border:1px solid #46e9ea;}
+#member_resources .cmb-group-title,
+#member_resources .cmbhandle, 
+#public_resources .cmb-group-title,
+#public_resources .cmbhandle
+{display:none;}
+
+#member_resources h2{background:#ea4646!important}
+#public_resources h2{background:#46e9ea!important}
+
+#member_resources .cmb2-metabox-description,
+#public_resources .cmb2-metabox-description{padding-bottom:0;}
+
+#member_resources .cmb-type-file-list{border-bottom: 1px solid #ea4646;}
+#public_resources .cmb-type-file-list{border-bottom: 1px solid #46e9ea;}
+
+#member_resources .postbox.cmb-row.cmb-repeatable-grouping,
+#public_resources .postbox.cmb-row.cmb-repeatable-grouping{background:transparent;}
+
+#member_resources .cmb-add-row,
+#public_resources .cmb-add-row{text-align:right;}
+
+
+.cmb2-metabox button.dashicons-before.dashicons-no-alt.cmb-remove-group-row {
+    top: 0!important;
+    line-height: 1em;
+    right: 0;
+	left: unset !important;
+}
+.button.cmb-remove-group-row.alignright{display:none}
+
+.cmb-remove-row .button.cmb-shift-rows{
+	position:absolute;
+    background: none;
+    border: 0;
+    box-shadow: unset;
+    position: ;
+    top: 0;
+    right: 50px;
+}
+.cmb-remove-row .button.cmb-shift-rows:hover{background:#dadada;}
+.cmb-remove-row .button.cmb-shift-rows.move-down{
+	 right: 15px;
+}
+
+#member_resources .cmb-attach-list li,
+#public_resources .cmb-attach-list li{margin-bottom:0;padding:0.75rem;background:#dadada;cursor:move}
