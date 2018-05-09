@@ -5,8 +5,8 @@
   Author: Pheriche
   Version: 0.1
   Author URI:http://pheriche.com
-
  */
+
 if ( ! defined( 'ABSPATH' ) ) { exit;} // Exit if accessed directly.
 //error_reporting(E_ALL);
 
@@ -18,22 +18,19 @@ if ( file_exists( dirname( __FILE__ ) . '/includes/cmb2/init.php' ) ) {
 	add_action( 'admin_notices', 'cmb2_memberportal_plugin_missing_cmb2' );
 }
 
-require_once ('includes/Cmb2Grid/Cmb2GridPlugin.php');
+require_once ('includes/CMB2-Grid/Cmb2GridPlugin.php');
 
+require_once ('portal-CPT.php');
 
-
-add_action( 'init', 'pher_portal_init', 0 );
-function pher_portal_init(){
+add_action( 'enqueue_scripts', 'pher_portal_frontendstyles', 0 );
+function pher_portal_frontendstyles(){
 	wp_enqueue_style( 'pher_portal_style', plugin_dir_url( __FILE__ ) . 'css/front-end-portal.css', array(), '0.1' );
-
 }
 
 add_action( 'admin_enqueue_scripts', 'pher_portal_adminstyles' );
 function pher_portal_adminstyles() {
-        wp_register_style(  'pher_portal_adminstyle', plugin_dir_url( __FILE__ ) . 'css/admin-portal.css', array(), '0.1' );
-        wp_enqueue_style( 'pher_portal_adminstyle' );
-
-		add_action( 'admin_head-post.php', 'legacyalert_acf_notice' ); // on an edit page go see if there are legacy files and links
+          wp_enqueue_style(  'pher_portal_adminstyle', plugin_dir_url( __FILE__ ) . 'css/admin-portal.css', array(), '0.1' );
+		//add_action( 'admin_head-post.php', 'legacyalert_acf_notice' ); // on an edit page go see if there are legacy files and links
 		//add_action( 'admin_notices', 'legacyalert_acf_notice' );
 }
 
@@ -47,7 +44,6 @@ Plugin is missing CMB2</p>
 
 function legacyalert_acf_notice() {
 // nag notice if they are editing a legacy page.
-
 	$theID=get_the_ID();
 	$protection = get_post_meta( $theID, 'resource_protection', 1 );
 
@@ -56,10 +52,7 @@ function legacyalert_acf_notice() {
 	$files = get_post_meta($theID,'event_file_list', 1 );
 
 	if ( gettype($thelinks)!='array' && gettype($thefiles) !='array'  ) return; // no links or files here so forget it.
-
 	//if(isset($protection) && $protection == ''){$protection = 'public';	}
-
-
 	if (  empty ( $check_if_saved_since) ){
 
   ?>
@@ -539,14 +532,14 @@ function lpf_librarian(){
 	$attachment_id=isset($_REQUEST['lpf'])?$_REQUEST['lpf']:null;
 
 	//force download and obscure the real download link of a protected library file
-    $mime=get_post_mime_type( $attachment_id);
+	$mime=get_post_mime_type( $attachment_id);
 	if (empty($mime)){$mime='application/octet-stream';}//or 'application/force-download'
 	$filepath=get_attached_file( $attachment_id);
 	$filename = basename($filepath);
-		if (strstr($_SERVER['HTTP_USER_AGENT'], "MSIE")) {$filename = preg_replace('/\./', '%2e', $filename, substr_count($filename, '.') - 1);}
-		// workaround for IE filename bug with multiple periods / multiple dots in filename ??is this even still a bug??
+	if (strstr($_SERVER['HTTP_USER_AGENT'], "MSIE")) {$filename = preg_replace('/\./', '%2e', $filename, substr_count($filename, '.') - 1);}
+	// workaround for IE filename bug with multiple periods / multiple dots in filename ??is this even still a bug??
 	$filesize=@filesize( $filepath);
-	 clearstatcache();
+	clearstatcache();
 
 	//TO DO user activity   log the download and user id
 	//do some checking - download nonce and is  user logged in?
@@ -578,7 +571,7 @@ function lpf_librarian(){
 		readfile($filepath);}
 		}else{
 	// bounce them because they tried to link to a protected resource.  It would be nice if we could hook an error msg, but so far I havent./
-		wp_redirect( home_url('/sign-in') );
-		 exit;
-		 }
+			wp_redirect( home_url('/sign-in') );
+		 	exit;
+		}
 }//end lpf_librarian
