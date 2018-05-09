@@ -18,11 +18,9 @@ if ( file_exists( dirname( __FILE__ ) . '/includes/cmb2/init.php' ) ) {
 	add_action( 'admin_notices', 'cmb2_memberportal_plugin_missing_cmb2' );
 }
 
-if ( file_exists( dirname( __FILE__ ) . 'includes/CMB2-grid/Cmb2GridPlugin.php' ) ) {
-	require_once 'includes/CMB2-grid/Cmb2GridPlugin.php';
-} else {
-	add_action( 'admin_notices', 'cmb2_memberportal_plugin_missing_cmb2' );
-}
+require_once ('includes/Cmb2Grid/Cmb2GridPlugin.php');
+
+
 
 add_action( 'init', 'pher_portal_init', 0 );
 function pher_portal_init(){
@@ -40,11 +38,11 @@ function pher_portal_adminstyles() {
 }
 
 
-function cmb2_memberportal_plugin_missing_cmb2() { ?>
-<div class="error">
-	<p><?php _e( 'Plugin is missing CMB2!' ); ?></p>
-</div>
-<?php }
+function cmb2_memberportal_plugin_missing_cmb2() {
+echo '<div class="error"><p>
+Plugin is missing CMB2</p>
+</div>';
+ }
 
 
 function legacyalert_acf_notice() {
@@ -187,7 +185,7 @@ $public_files->add_field( array(
 
 
 	  //Create a default grid
-		/*
+
 	$cmb2Grid = new \Cmb2Grid\Grid\Cmb2Grid($cmb_files);
 	$cmb2GroupGrid   = $cmb2Grid->addCmb2GroupGrid('linkgroup');
 	$row             = $cmb2GroupGrid->addRow();
