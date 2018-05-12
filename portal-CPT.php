@@ -35,8 +35,13 @@ function pheriche_portal_cpt() {
 			'capability_type' => 'page',
 			'hierarchical' => true,
 			'show_in_rest'       => true,
+			'template' => array(array( 'core/image', array('align' => 'left')),
+            array( 'core/heading', array('placeholder' => 'Add Description')),
+						array( 'core/paragraph', array('placeholder' => 'Add Description...')),
+					),
+			'template_lock' => 'all', // or 'insert' to allow moving
 			'rest_base'          => 'pher_portal',
-  			'rest_controller_class' => 'WP_REST_Posts_Controller',
+			'rest_controller_class' => 'WP_REST_Posts_Controller',
 			'supports' => array( 'title', 'editor', 'thumbnail', 'revisions')
 		)
 	);
@@ -47,6 +52,9 @@ function pheriche_portal_cpt() {
 				'label' => __( 'Portal Category' ),
 				'rewrite' => array( 'slug' => 'genre' ),
 				'hierarchical' => true,
+				'show_in_rest'          => true,
+				'rest_base'             => 'portal-category',
+				'rest_controller_class' => 'WP_REST_Terms_Controller',
 			)
 		);
 }
