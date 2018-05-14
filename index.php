@@ -11,6 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit;} // Exit if accessed directly.
 //error_reporting(E_ALL);
 
 //include_once( 'includes/learning-portal-page.php' );// is a content apender// phased out in favour of template
+	require_once 'includes/options-menu.php';
 
 if ( file_exists( dirname( __FILE__ ) . '/includes/cmb2/init.php' ) ) {
 	require_once 'includes/cmb2/init.php';
@@ -19,8 +20,13 @@ if ( file_exists( dirname( __FILE__ ) . '/includes/cmb2/init.php' ) ) {
 }
 
 require_once ('includes/CMB2-Grid/Cmb2GridPlugin.php');
-
 require_once ('portal-CPT.php');
+
+
+add_action( 'enqueue_block_editor_assets', 'portal_block_editor_styles' );
+function portal_block_editor_styles() {
+    wp_enqueue_style( 'portal-block-editor-styles', plugin_dir_url( __FILE__ ) . 'css/style-editor.css', false, '1.0', 'all' );
+}
 
 add_action( 'enqueue_scripts', 'pher_portal_frontendstyles', 0 );
 function pher_portal_frontendstyles(){

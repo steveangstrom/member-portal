@@ -1,0 +1,23 @@
+/*body.gutenberg-editor-page {
+    background-color: #d3ebf3;
+    color: #00005d;
+}
+*/
+/* Main column width */
+body.gutenberg-editor-page .editor-post-title,
+body.gutenberg-editor-page .editor-default-block-appender,
+body.gutenberg-editor-page .editor-block-list__block {
+    max-width: 1080px;
+}
+body.gutenberg-editor-page  .editor-post-title {
+    padding: 0px;
+}
+/* Width of "wide" blocks */
+body.gutenberg-editor-page .editor-block-list__block[data-align="wide"] {
+    max-width: 1080px;
+}
+
+/* Width of "full-wide" blocks */
+body.gutenberg-editor-page .editor-block-list__block[data-align="full"] {
+    max-width: none;
+}
