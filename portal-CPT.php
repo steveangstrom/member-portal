@@ -42,7 +42,7 @@ function pheriche_portal_cpt() {
 			'template_lock' => 'all', // or 'insert' to allow moving
 			'rest_base'          => 'pher_portal',
 			'rest_controller_class' => 'WP_REST_Posts_Controller',
-			'supports' => array( 'title', 'editor', 'thumbnail', 'revisions')
+			'supports' => array( 'title', 'editor', 'thumbnail')
 		)
 	);
 	register_taxonomy(

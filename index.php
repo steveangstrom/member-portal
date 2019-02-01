@@ -12,15 +12,17 @@ if ( ! defined( 'ABSPATH' ) ) { exit;} // Exit if accessed directly.
 
 //include_once( 'includes/learning-portal-page.php' );// is a content apender// phased out in favour of template
 	require_once 'includes/portal-options-menu.php';
-
+/*
 if ( file_exists( dirname( __FILE__ ) . '/includes/cmb2/init.php' ) ) {
 	require_once 'includes/cmb2/init.php';
 } else {
 	add_action( 'admin_notices', 'cmb2_memberportal_plugin_missing_cmb2' );
 }
 
-require_once ('includes/CMB2-Grid/Cmb2GridPlugin.php');
-require_once ('portal-CPT.php');
+require_once ('includes/CMB2-Grid/Cmb2GridPlugin.php');*/
+
+require_once ('portal-CPT.php');// include the custom post type
+
 
 register_deactivation_hook( __FILE__, 'flush_rewrite_rules' );
 register_activation_hook( __FILE__, 'memberportal_flush_rewrites' );
@@ -159,27 +161,18 @@ function get_personal_portal_items(){
 	return $out;
 }
 
- /***** Content display for FILE OUTPUT and PROTECTED LINK ************/
+add_filter( 'the_content', 'portal_content_append' );
 
-add_filter( 'the_content', 'events_insert_downloads' );
-
-function events_insert_downloads( $content ) {
-
-	if ( is_single() || is_page()) { // added page cond 28-4-17
-		// currently cmb2_getprotectedlink is not included
-		if (function_exists('cmb2_getprotectedlink')) {
-			$protectedlink = cmb2_getprotectedlink();
-			$content.=$protectedlink;
-		}
+function portal_content_append( $content ) {
+	// make a filter for this so users can add arbitrary content to the member portal page.
+	if (is_portal()){
+		$content=$content.'<br>Is portal';
 	}
-
-	if ( is_single() || is_page()) { // added page cond
-		// currently cmb2_output_file_list is not included
-		if (function_exists('cmb2_output_file_list')) {
-			$downloads = cmb2_output_file_list('event_file_list');// the id is a legacy.
-			$content.=$downloads;
-		}
-	}
-
 	return $content;
+}
+
+function is_portal(){
+	global $post;
+	$isportal = $post->post_type =='portal-page' ? true : false;
+	return $isportal;
 }

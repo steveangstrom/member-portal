@@ -184,6 +184,30 @@ function cmb2_output_file_list( $file_list_meta_key, $img_size = 'medium' ) {
 
 	return $out;
 }
+/***** Content display for FILE OUTPUT and PROTECTED LINK ************/
+
+add_filter( 'the_content', 'events_insert_downloads' );
+
+function events_insert_downloads( $content ) {
+
+ if ( is_single() || is_page()) { // added page cond 28-4-17
+	 // currently cmb2_getprotectedlink is not included
+	 if (function_exists('cmb2_getprotectedlink')) {
+		 $protectedlink = cmb2_getprotectedlink();
+		 $content.=$protectedlink;
+	 }
+ }
+
+ if ( is_single() || is_page()) { // added page cond
+	 // currently cmb2_output_file_list is not included
+	 if (function_exists('cmb2_output_file_list')) {
+		 $downloads = cmb2_output_file_list('event_file_list');// the id is a legacy.
+		 $content.=$downloads;
+	 }
+ }
+
+ return $content;
+}
 
  /********* log hook ***********/
 
