@@ -38,8 +38,6 @@ function pher_portal_frontendstyles(){
 add_action( 'admin_enqueue_scripts', 'pher_portal_adminstyles' );
 function pher_portal_adminstyles() {
           wp_enqueue_style(  'pher_portal_adminstyle', plugin_dir_url( __FILE__ ) . 'css/admin-portal.css', array(), '0.1' );
-		//add_action( 'admin_head-post.php', 'legacyalert_acf_notice' ); // on an edit page go see if there are legacy files and links
-		//add_action( 'admin_notices', 'legacyalert_acf_notice' );
 }
 
 //* Redirect a user who isn't logged in AWAY from the member-portal -------- kinda important! */
@@ -70,10 +68,11 @@ function subscription_redirect_post() {
 
  /**********   MENU ITEMS - Conditional adding, to avoid clash between "IF MENU" plugin and Qude plugin *******************/
 
-add_filter( 'wp_nav_menu_items', 'your_custom_menu_item', 10, 2 );
-function your_custom_menu_item ( $items, $args ) {
+add_filter( 'wp_nav_menu_items', 'memberlogin_menu_item', 10, 2 );
 
-  if ( $args->theme_location == 'top-navigation') {
+function memberlogin_menu_item ( $items, $args ) {
+// to-do change theme_location to the option.
+  if ( $args->theme_location == get_option('portal_menuname')) {
 	  global $username;
 		$slug = get_post_field( 'post_name', get_post());
 		$menuclasses = 'menu-item portal-menu-item menu-item-object-page menu-item-has-children has_sub narrow';

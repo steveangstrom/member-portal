@@ -18,6 +18,7 @@ function portal_register_settings() {
    add_option( 'portal_option', 'This is my default option value.');
    add_option( 'portal_login_location', 'page location');
    add_option( 'portal_userpage_location', 'user homepage location');
+   add_option( 'portal_menuname', 'primary');
    /*
    add_settings_section(
        'general_settings_section',         // ID used to identify this section and with which to register options
@@ -28,7 +29,7 @@ function portal_register_settings() {
 
    register_setting( 'portal_options_group', 'portal_option', 'myplugin_callback' );
    register_setting( 'portal_options_group', 'portal_login_location', 'myplugin_callback' );
-   register_setting( 'portal_options_group', 'portal_userpage_location', 'myplugin_callback' );
+   register_setting( 'portal_options_group', 'portal_menuname', 'myplugin_callback' );
 }
 
 
@@ -68,6 +69,10 @@ function portal_options_page(){
   <tr>
   <th scope="row"><label for="portal_userpage_location">User Page location</label></th>
   <td><input type="text" id="portal_userpage_location" name="portal_userpage_location" value="<?php echo get_option('portal_userpage_location'); ?>" /></td>
+  </tr>
+  <tr>
+  <th scope="row"><label for="portal_menuname">Menu for Login</label></th>
+  <td><input type="text" id="portal_menuname" name="portal_menuname" value="<?php echo get_option('portal_menuname'); ?>" /></td>
   </tr>
   </table>
   <?php  submit_button(); ?>
