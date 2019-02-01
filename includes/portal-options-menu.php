@@ -15,7 +15,7 @@ function sandbox_create_menu_page() {
 
 add_action( 'admin_init', 'portal_register_settings' );
 function portal_register_settings() {
-   add_option( 'portal_option', 'This is my default option value.');
+   add_option( 'portal_menu_label', 'Member Area');
    add_option( 'portal_login_location', 'page location');
    add_option( 'portal_userpage_location', 'user homepage location');
    add_option( 'portal_menuname', 'primary');
@@ -27,8 +27,9 @@ function portal_register_settings() {
        'general'                           // Page on which to add this section of options
    );*/
 
-   register_setting( 'portal_options_group', 'portal_option', 'myplugin_callback' );
+   register_setting( 'portal_options_group', 'portal_menu_label', 'myplugin_callback' );
    register_setting( 'portal_options_group', 'portal_login_location', 'myplugin_callback' );
+   register_setting( 'portal_options_group', 'portal_userpage_location', 'myplugin_callback' );
    register_setting( 'portal_options_group', 'portal_menuname', 'myplugin_callback' );
 }
 
@@ -58,21 +59,22 @@ function portal_options_page(){
   <h3>This is my option</h3>
   <p>Some text here.</p>
   <table>
+
   <tr>
-  <th scope="row"><label for="portal_option">Label</label></th>
-  <td><input type="text" id="portal_option" name="portal_option" value="<?php echo get_option('portal_option'); ?>" /></td>
-  </tr>
-  <tr>
-  <th scope="row"><label for="portal_login_location">Login Page location</label></th>
+  <th scope="row"><label for="portal_login_location">Sign-in Page</label></th>
   <td><input type="text" id="portal_login_location" name="portal_login_location" value="<?php echo get_option('portal_login_location'); ?>" /></td>
   </tr>
   <tr>
-  <th scope="row"><label for="portal_userpage_location">User Page location</label></th>
+  <th scope="row"><label for="portal_userpage_location">User Page</label></th>
   <td><input type="text" id="portal_userpage_location" name="portal_userpage_location" value="<?php echo get_option('portal_userpage_location'); ?>" /></td>
   </tr>
   <tr>
   <th scope="row"><label for="portal_menuname">Menu for Login</label></th>
   <td><input type="text" id="portal_menuname" name="portal_menuname" value="<?php echo get_option('portal_menuname'); ?>" /></td>
+  </tr>
+  <tr>
+  <th scope="row"><label for="portal_menu_label">Menu Label</label></th>
+  <td><input type="text" id="portal_menu_label" name="portal_menu_label" value="<?php echo get_option('portal_menu_label'); ?>" /></td>
   </tr>
   </table>
   <?php  submit_button(); ?>

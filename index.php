@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit;} // Exit if accessed directly.
 //error_reporting(E_ALL);
 
 //include_once( 'includes/learning-portal-page.php' );// is a content apender// phased out in favour of template
-	require_once 'includes/portal-options-menu.php';
+require_once 'includes/portal-options-menu.php';
 
 
 require_once ('portal-CPT.php');// include the custom post type
@@ -83,7 +83,7 @@ function memberlogin_menu_item ( $items, $args ) {
 
 			$user_ID = get_current_user_id();
 			$nice_name=    get_user_meta($user_ID, 'first_name', true);
-			if( $slug =='learning-portal'){ $menuclasses.='current_page_item active'; }
+			if( $slug =='member-portal'){ $menuclasses.='current_page_item active'; }
 
 					// create a log-out dropdown for the logged in menu
 					$submenu='<div style="height: 0px;" class="second"><div class="inner"><ul class="portal_dropdown">
@@ -91,7 +91,7 @@ function memberlogin_menu_item ( $items, $args ) {
 						<!--<li class="menu-item menu-item-type-post_type menu-item-object-page "><a href=""><i class="menu_icon blank fa"></i><span>JUST A Placeholder</span></a></li>-->
 					</ul></div></div>';
 
-			 $items .= '<li class="'.$menuclasses.'"><a href="'.esc_url( home_url( '/learning-portal/' )).'"><span class="portalitem">Your Learning Portal</span></a>'.$submenu.'</li>';
+			 $items .= '<li class="'.$menuclasses.'"><a href="'.esc_url( home_url( '/member-portal/' )).'"><span class="portalitem">Member Portal</span></a>'.$submenu.'</li>';
 
 			} else {
 
@@ -101,7 +101,7 @@ function memberlogin_menu_item ( $items, $args ) {
 					</ul></div></div>';
 
 				if( $slug =='sign-in'){ $menuclasses.='current_page_item active'; }
-				 $items .= '<li class="'.$menuclasses.'"><a href="'.esc_url( home_url( '/sign-in/' )).'">The Learning Portal</a>'.$submenu.'</li>';
+				 $items .= '<li class="'.$menuclasses.'"><a href="'.esc_url( home_url( '/sign-in/' )).'">Member Portal</a>'.$submenu.'</li>';
 		}
     }
 	if ( $args->menu->slug == 'learning-portal-menu') {
