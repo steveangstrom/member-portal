@@ -3,7 +3,7 @@
   Plugin Name: Member Portal
   Plugin URI: pheriche.com
   Author: Pheriche
-  Version: 0.1
+  Version: 0.5
   Author URI:http://pheriche.com
  */
 
@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit;} // Exit if accessed directly.
 //error_reporting(E_ALL);
 
 //include_once( 'includes/learning-portal-page.php' );// is a content apender// phased out in favour of template
-	require_once 'includes/options-menu.php';
+	require_once 'includes/portal-options-menu.php';
 
 if ( file_exists( dirname( __FILE__ ) . '/includes/cmb2/init.php' ) ) {
 	require_once 'includes/cmb2/init.php';
