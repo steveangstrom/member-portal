@@ -8,7 +8,7 @@ function pheriche_portal_cpt() {
 	register_post_type( 'portal-page',
 		array( 'labels' => array(
 			'name' => __( 'Member Portal', 'pherichetheme' ),
-			'singular_name' => __( 'portal Item', 'pherichetheme' ),
+			'singular_name' => __( 'Portal Item', 'pherichetheme' ),
 			'all_items' => __( 'All portal pages', 'pherichetheme' ),
 			'add_new' => __( 'Add a Portal page', 'pherichetheme' ),
 			'add_new_item' => __( 'Add page', 'pherichetheme' ),
@@ -39,7 +39,7 @@ function pheriche_portal_cpt() {
             array( 'core/heading', array('placeholder' => 'Add Description')),
 						array( 'core/paragraph', array('placeholder' => 'Add Description...')),
 					),
-			'template_lock' => 'all', // or 'insert' to allow moving
+			//'template_lock' => 'all', // or 'insert' to allow moving
 			'rest_base'          => 'pher_portal',
 			'rest_controller_class' => 'WP_REST_Posts_Controller',
 			'supports' => array( 'title', 'editor', 'thumbnail')

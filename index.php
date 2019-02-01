@@ -12,14 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit;} // Exit if accessed directly.
 
 //include_once( 'includes/learning-portal-page.php' );// is a content apender// phased out in favour of template
 	require_once 'includes/portal-options-menu.php';
-/*
-if ( file_exists( dirname( __FILE__ ) . '/includes/cmb2/init.php' ) ) {
-	require_once 'includes/cmb2/init.php';
-} else {
-	add_action( 'admin_notices', 'cmb2_memberportal_plugin_missing_cmb2' );
-}
 
-require_once ('includes/CMB2-Grid/Cmb2GridPlugin.php');*/
 
 require_once ('portal-CPT.php');// include the custom post type
 
@@ -49,54 +42,21 @@ function pher_portal_adminstyles() {
 		//add_action( 'admin_notices', 'legacyalert_acf_notice' );
 }
 
+//* Redirect a user who isn't logged in AWAY from the member-portal -------- kinda important! */
 
-function cmb2_memberportal_plugin_missing_cmb2() {
-echo '<div class="error"><p>
-Plugin is missing CMB2</p>
-</div>';
- }
-
-
-function legacyalert_acf_notice() {
-// nag notice if they are editing a legacy page.
-	$theID=get_the_ID();
-	$protection = get_post_meta( $theID, 'resource_protection', 1 );
-
-	$check_if_saved_since =  get_post_meta( $theID, 'resource_protection_override', 1 );
-	$thelinks = get_post_meta( $theID, 'linkgroup', true );
-	$files = get_post_meta($theID,'event_file_list', 1 );
-
-	if ( gettype($thelinks)!='array' && gettype($thefiles) !='array'  ) return; // no links or files here so forget it.
-	//if(isset($protection) && $protection == ''){$protection = 'public';	}
-	if (  empty ( $check_if_saved_since) ){
-
-  ?>
-  <div class="update-nag notice">
-     <?php echo( '<h3>NOTICE: Learning Portal Feature Update</h3> This page <b>'.get_the_title().'</b> contains legacy <em>Public</em> resources which are attached to the <em>Member</em> Resources section (red).  Currently site visitors will see these legacy documents as originally set(Public). <br> <b>Before saving please put any public resources into the dedicated Public Resources section</b>'); ?>
-  </div>
-  <?php
-
-	}
-  remove_action('admin_notices', 'legacyalert_acf_notice');
+add_action( 'template_redirect', 'subscription_redirect_post' );
+function subscription_redirect_post() {
+  $queried_post_type = get_query_var('post_type');
+  if (  !is_user_logged_in () && 'portal-page' ==  $queried_post_type ) {
+    wp_redirect( home_url());
+    exit;
+  }
 }
-
-
-//* Redirect a user who isn't logged in AWAY from learning-portal -------- kinda important */
-
-function pher_auth_redirect_user() {
-
-	if( !is_user_logged_in () && is_page( array( 'learning-portal' )) ) {
-		wp_redirect( home_url('/sign-in') ); exit;
-	}
-}
-add_filter( 'pre_get_posts', 'pher_auth_redirect_user' );
-
-
 
   ################################################################################
 
 /******  NEW template redirect for learning portal ********/
-
+/*
  function portal_single_template($single_template) {
   global $wp_query, $post;
 
@@ -105,9 +65,8 @@ add_filter( 'pre_get_posts', 'pher_auth_redirect_user' );
 	}
     return $single_template;
 }
+*/
 //add_filter('page_template', 'portal_single_template'); //  SOON COME
-
-
 
  /**********   MENU ITEMS - Conditional adding, to avoid clash between "IF MENU" plugin and Qude plugin *******************/
 
