@@ -1,8 +1,9 @@
 # to do
 ### options section
 - move membership to a WP based user system
-- unhook CMB2 as much as possible in prep for Gutenberg
+- go get the data table for members, the sign in page, the register page, etc.
+- unhook CMB2 as much as possible in prep for Gutenberg [DONE]
 - create the ability to tie custom user fields to User_data with ACF
 - create require options
 - create menu under member Section
-- create fields for setting page locations (portal, login, lostpass, dashboard, GDPR locations)
+- create fields for setting page locations (portal, login, lostpass, dashboard, GDPR locations) [part DONE]
