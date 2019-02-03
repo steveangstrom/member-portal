@@ -36,8 +36,8 @@ function portal_register_settings() {
 
 add_action('admin_menu', 'portal_register_options_page');
 function portal_register_options_page() {
-  add_options_page('Page Title', 'Portal Options', 'manage_options', 'portal_options', 'portal_options_page');
-
+  //add_options_page('Page Title', 'Portal Options', 'manage_options', 'portal_options', 'portal_options_page');
+add_submenu_page( 'edit.php?post_type=portal-page', 'Page Title', 'Portal Options', 'manage_options', 'portal_options', 'portal_options_page');
 
 }
 
