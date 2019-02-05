@@ -21,17 +21,27 @@ function has_bought_membership($prod_arr) {
 
         // Iterating through each current customer products bought in the order
         foreach ($order->get_items() as $item) {
+
+
             // WC 3+ compatibility
             if ( version_compare( WC_VERSION, '3.0', '<' ) )
                 $product_id = $item['product_id'];
             else
                 $product_id = $item->get_product_id();
-
             // Your condition related to your 2 specific products Ids
-            if ( in_array( $product_id, $prod_arr ) )
-                $bought = true;
-        }
+            if ( in_array( $product_id, $prod_arr )) {
+              $bought = true;
+
+              // now get the variation to get the expiry date
+              $product = $item->get_product();
+              $variation = $item->get_variation_id();
+
+              echo'<pre>';
+              print_r($variation);
+              echo'</pre>';
+            }
+           }
     }
     // return "true" if one the specifics products have been bought before by customer
-    return array('bought'=>$bought, 'order_date'=>$order_date);
+    return array('bought'=>$bought, 'order_date'=>$order_date, 'variation'=>$variation);
 }

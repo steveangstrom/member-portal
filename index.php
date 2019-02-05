@@ -131,7 +131,7 @@ function portal_content_append( $content ) {
 		$membership_status=has_bought_membership(array(	$member_product ));
 
 		if ($membership_status['bought']){
-			$content=$content.'This user has bought membership on the date of '.$membership_status['order_date'];
+			$content=$content.'This user has bought membership on the date of '.$membership_status['order_date'].'  and  a variation of '.$membership_status['variation'];
 		}
 	}
 
