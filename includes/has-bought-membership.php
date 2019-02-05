@@ -1,9 +1,9 @@
 <?php
-function has_bought_membership() {
+function has_bought_membership($prod_arr) {
     $bought = false;
 
     // Set HERE ine the array your specific target product IDs
-    $prod_arr = array( '3202', '3203' );
+  //  $prod_arr = array( '3202', '3203' );
 
     // Get all customer orders
     $customer_orders = get_posts( array(

@@ -126,7 +126,10 @@ function portal_content_append( $content ) {
 	// make a filter for this so users can add arbitrary content to the member portal page.
 	if (is_portal()){
 		$content=$content.'<br>Is portal<br>';
-		if (has_bought_membership())$content=$content.'This user has bought membership';
+		 // $prod_arr = array( '3202', '3203' );
+		$member_product =  get_option('portal_woo_membership_product');
+		 $prod_arr = array(	$member_product );
+		if (has_bought_membership($prod_arr))$content=$content.'This user has bought membership';
 	}
 
 	return $content;

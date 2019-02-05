@@ -19,6 +19,8 @@ function portal_register_settings() {
    add_option( 'portal_login_location', 'page location');
    add_option( 'portal_userpage_location', 'user homepage location');
    add_option( 'portal_menuname', 'primary');
+   add_option( 'portal_woo_membership_product', '');
+
    /*
    add_settings_section(
        'general_settings_section',         // ID used to identify this section and with which to register options
@@ -31,6 +33,7 @@ function portal_register_settings() {
    register_setting( 'portal_options_group', 'portal_login_location', 'myplugin_callback' );
    register_setting( 'portal_options_group', 'portal_userpage_location', 'myplugin_callback' );
    register_setting( 'portal_options_group', 'portal_menuname', 'myplugin_callback' );
+   register_setting( 'portal_options_group', 'portal_woo_membership_product', 'myplugin_callback' );
 }
 
 
@@ -75,6 +78,10 @@ function portal_options_page(){
   <tr>
   <th scope="row"><label for="portal_menu_label">Menu Label</label></th>
   <td><input type="text" id="portal_menu_label" name="portal_menu_label" value="<?php echo get_option('portal_menu_label'); ?>" /></td>
+  </tr>
+  <tr>
+  <th scope="row"><label for="portal_woo_membership_product">Woo Member Product</label></th>
+  <td><input type="text" id="portal_woo_membership_product" name="portal_woo_membership_product" value="<?php echo get_option('portal_woo_membership_product'); ?>" />(copy product ID from Woo member product)</td>
   </tr>
   </table>
   <?php  submit_button(); ?>
