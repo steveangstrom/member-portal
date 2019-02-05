@@ -131,7 +131,15 @@ function portal_content_append( $content ) {
 		$membership_status=has_bought_membership(array(	$member_product ));
 
 		if ($membership_status['bought']){
-			$content=$content.'This user has bought membership on the date of '.$membership_status['order_date'].'  and  a variation of '.$membership_status['variation'];
+			 $ordertime = strtotime($membership_status['order_date']);
+			 $membership_duration = $membership_status['variation_atts']['attribute_duration'];
+			 $elapsetime = strtotime($membership_status['order_date'].'+ '.$membership_duration.' months');
+			 $elapsetimeformat = date('d-m-Y',$elapsetime);
+			 $newformat = date('d-m-Y',$ordertime);
+			$content= $content.'This user has bought membership on the date of '.$membership_status['order_date'].
+			'  and  a variation of '.$membership_status['variation_id'] .
+			 ' The original date: '.$newformat.' plus the duration of '.$membership_duration.' months means this membership elapses on '.$elapsetimeformat;
+
 		}
 	}
 
