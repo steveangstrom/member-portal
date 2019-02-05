@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit;} // Exit if accessed directly.
 
 //include_once( 'includes/learning-portal-page.php' );// is a content apender// phased out in favour of template
 require_once 'includes/portal-options-menu.php';
-
+require_once 'includes/has-bought-membership.php';
 
 require_once ('portal-CPT.php');// include the custom post type
 
@@ -68,7 +68,8 @@ function subscription_redirect_post() {
 
  /**********   MENU ITEMS - Conditional adding, to avoid clash between "IF MENU" plugin and Qude plugin *******************/
 
-add_filter( 'wp_nav_menu_items', 'memberlogin_menu_item', 10, 2 );
+#menu removed in favour of the Woocommerce login.
+ add_filter( 'wp_nav_menu_items', 'memberlogin_menu_item', 10, 2 );
 
 function memberlogin_menu_item ( $items, $args ) {
 // to-do change theme_location to the option.
@@ -87,7 +88,7 @@ function memberlogin_menu_item ( $items, $args ) {
 
 					// create a log-out dropdown for the logged in menu
 					$submenu='<div style="height: 0px;" class="second"><div class="inner"><ul class="portal_dropdown">
-						<li  class="menu-item menu-item-type-post_type menu-item-object-page "><a href="'.wp_logout_url( home_url() ).'">Logout '.$nice_name.'</a></li>
+						<li  class="menu-item menu-item-type-post_type menu-item-object-page "><a href="'. wp_logout_url( get_permalink( woocommerce_get_page_id( 'myaccount' ) ) ) .'">Logout '.$nice_name.'</a></li>
 						<!--<li class="menu-item menu-item-type-post_type menu-item-object-page "><a href=""><i class="menu_icon blank fa"></i><span>JUST A Placeholder</span></a></li>-->
 					</ul></div></div>';
 
@@ -96,7 +97,7 @@ function memberlogin_menu_item ( $items, $args ) {
 			} else {
 
 					$submenu='<div style="height: 0px;" class="second"><div class="inner"><ul class="portal_dropdown">
-						<li  class="menu-item menu-item-type-post_type menu-item-object-page "><a href="'. home_url('sign-in') .'">Sign In</a></li>
+						<li  class="menu-item menu-item-type-post_type menu-item-object-page "><a href="'. get_permalink( wc_get_page_id( 'myaccount' ) ) .'">Sign In</a></li>
 						<li class="menu-item menu-item-type-post_type menu-item-object-page "><a href="'. home_url('register') .'">Register</a></li>
 					</ul></div></div>';
 
@@ -124,8 +125,10 @@ add_filter( 'the_content', 'portal_content_append' );
 function portal_content_append( $content ) {
 	// make a filter for this so users can add arbitrary content to the member portal page.
 	if (is_portal()){
-		$content=$content.'<br>Is portal';
+		$content=$content.'<br>Is portal<br>';
+		if (has_bought_membership())$content=$content.'This user has bought membership';
 	}
+
 	return $content;
 }
 
