@@ -17,6 +17,7 @@ function has_bought_membership($prod_arr) {
         // Updated compatibility with WooCommerce 3+
         $order_id = method_exists( $order, 'get_id' ) ? $order->get_id() : $order->id;
         $order = wc_get_order( $customer_order );
+        $order_date = $order->order_date;
 
         // Iterating through each current customer products bought in the order
         foreach ($order->get_items() as $item) {
@@ -32,5 +33,5 @@ function has_bought_membership($prod_arr) {
         }
     }
     // return "true" if one the specifics products have been bought before by customer
-    return $bought;
+    return array('bought'=>$bought, 'order_date'=>$order_date);
 }

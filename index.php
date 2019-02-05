@@ -128,8 +128,11 @@ function portal_content_append( $content ) {
 		$content=$content.'<br>Is portal<br>';
 		 // $prod_arr = array( '3202', '3203' );
 		$member_product =  get_option('portal_woo_membership_product');
-		 $prod_arr = array(	$member_product );
-		if (has_bought_membership($prod_arr))$content=$content.'This user has bought membership';
+		$membership_status=has_bought_membership(array(	$member_product ));
+
+		if ($membership_status['bought']){
+			$content=$content.'This user has bought membership on the date of '.$membership_status['order_date'];
+		}
 	}
 
 	return $content;
