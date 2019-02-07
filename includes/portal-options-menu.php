@@ -14,10 +14,20 @@ function sandbox_create_menu_page() {
 */
 
 add_action( 'admin_init', 'portal_register_settings' );
+
 function portal_register_settings() {
+
+  if (function_exists('wc_get_page_id')){
+    $account_loc =  get_permalink( wc_get_page_id( 'myaccount' ));
+  }else{
+    $account_loc = 'Member Area';
+  }
+
+
    add_option( 'portal_menu_label', 'Member Area');
-   add_option( 'portal_login_location', 'page location');
-   add_option( 'portal_userpage_location', 'user homepage location');
+   add_option( 'portal_login_location', $account_loc );
+   add_option( 'portal_register_location', $account_loc );
+   add_option( 'portal_userpage_location', $account_loc );
    add_option( 'portal_menuname', 'primary');
    add_option( 'portal_woo_membership_product', '');
 
@@ -31,6 +41,7 @@ function portal_register_settings() {
 
    register_setting( 'portal_options_group', 'portal_menu_label', 'myplugin_callback' );
    register_setting( 'portal_options_group', 'portal_login_location', 'myplugin_callback' );
+   register_setting( 'portal_options_group', 'portal_register_location', 'myplugin_callback' );
    register_setting( 'portal_options_group', 'portal_userpage_location', 'myplugin_callback' );
    register_setting( 'portal_options_group', 'portal_menuname', 'myplugin_callback' );
    register_setting( 'portal_options_group', 'portal_woo_membership_product', 'myplugin_callback' );
@@ -38,11 +49,21 @@ function portal_register_settings() {
 
 
 add_action('admin_menu', 'portal_register_options_page');
+
 function portal_register_options_page() {
   //add_options_page('Page Title', 'Portal Options', 'manage_options', 'portal_options', 'portal_options_page');
-add_submenu_page( 'edit.php?post_type=portal-page', 'Page Title', 'Portal Options', 'manage_options', 'portal_options', 'portal_options_page');
+  add_submenu_page( 'edit.php?post_type=portal-page', 'Page Title', 'Portal Options', 'manage_options', 'portal_options', 'portal_options_page');
+}
+
+function member_portal_woo_options_reset(){
+
+    $account_loc =  get_permalink( wc_get_page_id( 'myaccount' ));
+  update_option( 'portal_login_location', $account_loc );
+  update_option( 'portal_register_location', $account_loc );
+  update_option( 'portal_userpage_location', $account_loc );
 
 }
+
 
 
 /*********** CAllbacks ************/
@@ -59,13 +80,17 @@ function portal_options_page(){
   <h2>Portal Options</h2>
   <form method="post" action="options.php">
   <?php settings_fields( 'portal_options_group' ); ?>
-  <h3>This is my option</h3>
-  <p>Some text here.</p>
-  <table>
+  <h3>Options for the Membership portal</h3>
 
+  <table>
   <tr>
   <th scope="row"><label for="portal_login_location">Sign-in Page</label></th>
   <td><input type="text" id="portal_login_location" name="portal_login_location" value="<?php echo get_option('portal_login_location'); ?>" /></td>
+  </tr>
+  <tr>
+  <tr>
+  <th scope="row"><label for="portal_register_location">Register Page</label></th>
+  <td><input type="text" id="portal_register_location" name="portal_register_location" value="<?php echo get_option('portal_register_location'); ?>" /></td>
   </tr>
   <tr>
   <th scope="row"><label for="portal_userpage_location">User Page</label></th>
@@ -88,4 +113,14 @@ function portal_options_page(){
   </form>
   </div>
 <?php
+
+
+    if (!function_exists('wc_get_page_id')){
+      echo 'WooCommerce is not installed, this plugin works best with WooCommerce asthe login and register interface so you can add paid membership';
+    }else{
+      global $wp;
+      $current =  $wp->request ;
+      echo '<a class="button button-primary " href="'.$current.'?stuffhere">Reset</a> all entries to WooCommerce standard pages';
+    }
+
 }

@@ -97,12 +97,12 @@ function memberlogin_menu_item ( $items, $args ) {
 			} else {
 
 					$submenu='<div style="height: 0px;" class="second"><div class="inner"><ul class="portal_dropdown">
-						<li  class="menu-item menu-item-type-post_type menu-item-object-page "><a href="'. get_permalink( wc_get_page_id( 'myaccount' ) ) .'">Sign In</a></li>
-						<li class="menu-item menu-item-type-post_type menu-item-object-page "><a href="'. home_url('register') .'">Register</a></li>
+						<li  class="menu-item menu-item-type-post_type menu-item-object-page "><a href="'.get_option('portal_login_location') .'">Sign In</a></li>
+						<li class="menu-item menu-item-type-post_type menu-item-object-page "><a href="'. get_option('portal_register_location')  .'">Register</a></li>
 					</ul></div></div>';
 
 				if( $slug =='sign-in'){ $menuclasses.='current_page_item active'; }
-				 $items .= '<li class="'.$menuclasses.'"><a href="'.esc_url( home_url( '/sign-in/' )).'">Member Portal</a>'.$submenu.'</li>';
+				 $items .= '<li class="'.$menuclasses.'"><a href="'.get_option('portal_userpage_location').'">Member Portal</a>'.$submenu.'</li>';
 		}
     }
 	if ( $args->menu->slug == 'learning-portal-menu') {
