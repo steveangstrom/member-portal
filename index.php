@@ -14,6 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit;} // Exit if accessed directly.
 require_once 'includes/portal-options-menu.php';
 require_once 'includes/has-bought-membership.php';
 require_once 'includes/portal-components.php';
+require_once 'includes/portal-blocks.php';
 require_once 'includes/portal-userpage.php';
 
 require_once ('portal-CPT.php');// include the custom post type
