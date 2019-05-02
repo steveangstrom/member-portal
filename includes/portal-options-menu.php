@@ -94,7 +94,16 @@ function portal_options_page(){
   </tr>
   <tr>
   <th scope="row"><label for="portal_userpage_location">User Page</label></th>
-  <td><input type="text" id="portal_userpage_location" name="portal_userpage_location" value="<?php echo get_option('portal_userpage_location'); ?>" /></td>
+  <td><input type="text" id="portal_userpage_location" name="portal_userpage_location" value="<?php echo $page_slug=get_option('portal_userpage_location'); ?>" />
+<?php
+  $page = get_page_by_path( $page_slug , OBJECT );
+
+   if ( $page ){
+     echo 'exists';}else{
+    echo '<a class="button">Make</a>'; // no action attached yet.
+   }
+?>
+  </td>
   </tr>
   <tr>
   <th scope="row"><label for="portal_menuname">Menu for Login</label></th>
@@ -105,15 +114,34 @@ function portal_options_page(){
   <td><input type="text" id="portal_menu_label" name="portal_menu_label" value="<?php echo get_option('portal_menu_label'); ?>" /></td>
   </tr>
   <tr>
-  <th scope="row"><label for="portal_woo_membership_product">Woo Member Product</label></th>
+  <th scope="row"><label for="portal_woo_membership_product">Woo Membership Product</label></th>
   <td><input type="text" id="portal_woo_membership_product" name="portal_woo_membership_product" value="<?php echo get_option('portal_woo_membership_product'); ?>" />(copy product ID from Woo member product)</td>
   </tr>
   </table>
   <?php  submit_button(); ?>
   </form>
   </div>
+<p><a href="http://localhost/testingzone/wp-admin/admin.php?action=wpse10500&data=foobaridisfromlink">Submit</a><p>
 <?php
 
+
+
+
+
+
+function create_portal_page(){
+  status_header(200);
+   die("Server received '{$_REQUEST['data']}' from your browser.");
+  /* $post_details = array(
+  'post_title'    => $pagetitle,
+  'post_content'  => 'This is the portal page',
+  'post_status'   => 'publish',
+  'post_author'   => 1,
+  'post_type' => 'page'
+   );
+   wp_insert_post( $post_details );*/
+
+}
 
     if (!function_exists('wc_get_page_id')){
       echo 'WooCommerce is not installed, this plugin works best with WooCommerce asthe login and register interface so you can add paid membership';
@@ -123,4 +151,33 @@ function portal_options_page(){
       echo '<a class="button button-primary " href="'.$current.'?stuffhere">Reset</a> all entries to WooCommerce standard pages';
     }
 
+}
+
+
+add_action( 'admin_menu', 'wpse10500_admin_menu' );
+function wpse10500_admin_menu(){
+    add_management_page( 'WPSE 10500 Test page', 'WPSE 10500 Test page', 'administrator', 'wpse10500', 'wpse10500_do_page' );
+}
+
+
+add_action( 'admin_action_wpse10500', 'wpse10500_admin_action' );
+function wpse10500_admin_action(){
+    // Do your stuff here
+    echo('yep');
+    status_header(200);
+       die("Server received '{$_REQUEST['data']}' from your browser.");
+    wp_redirect( $_SERVER['HTTP_REFERER'] );
+    exit();
+}
+
+
+function wpse10500_do_page(){
+?>
+<a href="http://localhost/testingzone/wp-admin/admin.php?action=wpse10500&data=foobaridisfromlink">Submit</a>
+<form method="POST" action="<?php echo admin_url( 'admin.php' ); ?>">
+    <input type="hidden" name="action" value="wpse10500" />
+    <input type="hidden" name="data" value="foobarid blah blah balh ">
+    <input type="submit" value="Do it!" />
+</form>
+<?php
 }

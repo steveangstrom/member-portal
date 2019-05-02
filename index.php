@@ -3,7 +3,7 @@
   Plugin Name: Member Portal
   Plugin URI: pheriche.com
   Author: Pheriche
-  Version: 0.5
+  Version: 0.51
   Author URI:http://pheriche.com
  */
 
@@ -13,6 +13,8 @@ if ( ! defined( 'ABSPATH' ) ) { exit;} // Exit if accessed directly.
 //include_once( 'includes/learning-portal-page.php' );// is a content apender// phased out in favour of template
 require_once 'includes/portal-options-menu.php';
 require_once 'includes/has-bought-membership.php';
+require_once 'includes/portal-components.php';
+require_once 'includes/portal-userpage.php';
 
 require_once ('portal-CPT.php');// include the custom post type
 
@@ -92,7 +94,7 @@ function memberlogin_menu_item ( $items, $args ) {
 						<!--<li class="menu-item menu-item-type-post_type menu-item-object-page "><a href=""><i class="menu_icon blank fa"></i><span>JUST A Placeholder</span></a></li>-->
 					</ul></div></div>';
 
-			 $items .= '<li class="'.$menuclasses.'"><a href="'.esc_url( home_url( '/member-portal/' )).'"><span class="portalitem">Member Portal</span></a>'.$submenu.'</li>';
+			 $items .= '<li class="'.$menuclasses.'"><a href="'. get_home_url().'/'.get_option('portal_userpage_location').'"><span class="portalitem">Member Portal</span></a>'.$submenu.'</li>';
 
 			} else {
 
@@ -102,52 +104,11 @@ function memberlogin_menu_item ( $items, $args ) {
 					</ul></div></div>';
 
 				if( $slug =='sign-in'){ $menuclasses.='current_page_item active'; }
-				 $items .= '<li class="'.$menuclasses.'"><a href="'.get_option('portal_userpage_location').'">Member Portal</a>'.$submenu.'</li>';
+				 $items .= '<li class="'.$menuclasses.'"><a href="'.get_home_url().'/'.get_option('portal_userpage_location').'">Member Portal</a>'.$submenu.'</li>';
 		}
     }
 	if ( $args->menu->slug == 'learning-portal-menu') {
 		 $items .= get_personal_portal_items();
 	}
 	return $items;
-}
-
-
-function get_personal_portal_items(){
-	global $username;
-	$out='';
-	$out.=('<li><a href="'.wp_logout_url( home_url() ).'">Logout ('.$username.')</a></li>');
-	$out.=('<li><a href="'.wp_lostpassword_url().'" title="Lost Password">Change Password</a></li>');
-	return $out;
-}
-
-add_filter( 'the_content', 'portal_content_append' );
-
-function portal_content_append( $content ) {
-	// make a filter for this so users can add arbitrary content to the member portal page.
-	if (is_portal()){
-		$content=$content.'<br>Is portal<br>';
-		 // $prod_arr = array( '3202', '3203' );
-		$member_product =  get_option('portal_woo_membership_product');
-		$membership_status=has_bought_membership(array(	$member_product ));
-
-		if ($membership_status['bought']){
-			 $ordertime = strtotime($membership_status['order_date']);
-			 $membership_duration = $membership_status['variation_atts']['attribute_duration'];
-			 $elapsetime = strtotime($membership_status['order_date'].'+ '.$membership_duration.' months');
-			 $elapsetimeformat = date('d-m-Y',$elapsetime);
-			 $newformat = date('d-m-Y',$ordertime);
-			$content= $content.'This user has bought membership on the date of '.$membership_status['order_date'].
-			'  and  a variation of '.$membership_status['variation_id'] .
-			 ' The original date: '.$newformat.' plus the duration of '.$membership_duration.' months means this membership elapses on '.$elapsetimeformat;
-
-		}
-	}
-
-	return $content;
-}
-
-function is_portal(){
-	global $post;
-	$isportal = $post->post_type =='portal-page' ? true : false;
-	return $isportal;
 }
