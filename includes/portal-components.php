@@ -34,9 +34,37 @@ function portal_content_append( $content ) {
 
 		}
 	}
-
 	return $content;
 }
+
+/* ----------  component to get  membersip details  ------------- */
+
+function get_portal_membership_status( $content='' ) {
+		$member_product =  get_option('portal_woo_membership_product');
+		$membership_status=has_bought_membership(array(	$member_product ));
+
+		if ($membership_status['bought']){
+			 $ordertime = strtotime($membership_status['order_date']);
+			 $membership_duration = $membership_status['variation_atts']['attribute_duration'];
+			 $elapsetime = strtotime($membership_status['order_date'].'+ '.$membership_duration.' months');
+			 $elapsetimeformat = date('d-m-Y',$elapsetime);
+			 $newformat = date('d-m-Y',$ordertime);
+			$content= 'This user has bought membership on the date of '.$membership_status['order_date'].
+			'  and  a variation of '.$membership_status['variation_id'] .
+			 ' The original date: '.$newformat.' plus the duration of '.$membership_duration.' months means this membership elapses on '.$elapsetimeformat;
+	}
+	return $content;
+}
+/* ----------  component to display  membersip details  ------------- */
+function show_portal_membership_status(  ) {
+	$content='<div class="portal_member_details portal_box">';
+	$content= get_portal_membership_status();
+	$content.= '</div>';
+	echo $content;
+}
+
+
+
 
 function is_portal_content(){
 	global $post;

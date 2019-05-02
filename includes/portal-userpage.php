@@ -25,25 +25,19 @@
 	global $username;
 
 	$slug = get_post_field( 'post_name', get_post());
-$userpage=get_option('portal_userpage_location');
+  $userpage=get_option('portal_userpage_location');
 	if( $slug ==$userpage){
-
-      echo 'this is the user page';
-
 		 if ( !is_user_logged_in() ) {
 			 $content = '<h2>Please sign in to the Portal</h2>';
-
 		 }else{
-
 
 		$user_ID = get_current_user_id();
 		$usermeta = get_user_meta( $user_ID );
 		$username = $usermeta['nickname'][0];// is actually their email now
 
-/*echo('<pre>');
-print_r($usermeta['membership_status'][0]);
-echo('</pre>');*/
-
+    /*echo('<pre>');
+    print_r($usermeta['membership_status'][0]);
+    echo('</pre>');*/
 
 		$userdata = get_userdata( $user_ID );
 
@@ -64,15 +58,18 @@ echo('</pre>');*/
 			$head='';
 			$lowermeta='';
 
+
 			if(!empty($usermeta['first_name'][0])){
-				$content = '<h2>Hi '.$usermeta['first_name'][0].',<br>Welcome to the  portal</h2>'.$content;
+				$content = '<h3>Hi '.$usermeta['first_name'][0].',<br>Welcome to the  portal</h3>'.$content;
 			}else{
-				$content = '<h2>Hi '.$usermeta['nickname'][0].',<br>Welcome to the learning portal</h2>'.$content;
+				$content = '<h3>Hi '.$usermeta['nickname'][0].',<br>Welcome to the portal</h3>'.$content;
 			}
 
 			if(!empty($usermeta['organisation'][0])){
 					 $content =  '<h4>From '.$usermeta['organisation'][0].'</h4>'.$content;
 				 }
+
+   $content = get_portal_membership_status().$content;
 
 		/*
 			if(!empty($usermeta['_last_login'][0])){
