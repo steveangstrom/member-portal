@@ -12,11 +12,10 @@ if ( ! defined( 'ABSPATH' ) ) { exit;} // Exit if accessed directly.
 
 //include_once( 'includes/learning-portal-page.php' );// is a content apender// phased out in favour of template
 require_once 'includes/portal-options-menu.php';
-require_once 'includes/has-bought-membership.php';
+//require_once 'includes/portal-utilities.php';
 require_once 'includes/portal-components.php';
 require_once 'includes/portal-blocks.php';
 require_once 'includes/portal-userpage.php';
-
 require_once ('portal-CPT.php');// include the custom post type
 
 
@@ -103,18 +102,13 @@ function _custom_nav_menu_item( $title, $url, $order, $parent = 0){
 add_filter( 'wp_get_nav_menu_items', 'custom_nav_menu_member_portal', 20, 2 );
 function custom_nav_menu_member_portal( $items, $menu ) {
 	$top = _custom_nav_menu_item( 'Portal',  get_home_url().'/'.get_option('portal_userpage_location'), 100 );
-
   if ( $menu->slug == 'test' ) { // remember to get this from options not static !
 
 	if(is_user_logged_in ()){ // if they are logged in then bother to query the page and slug for menu class hilite
 		$postslug = get_post_field( 'post_name', get_post());
 		if( $postslug =='member-portal'){ $menuclasses.='current_page_item active'; }
 			$top->classes[]='current_page_item active';
-
 	}
-
-
-
 		$items[] = $top;
 
   if ( get_current_user_id() ){
@@ -138,7 +132,6 @@ function portal_login_redirect( $redirect ) {
 	}
 	return get_home_url().'/'.get_option('portal_userpage_location');
 }
-
 add_filter( 'woocommerce_login_redirect', 'portal_login_redirect' );
 
 
@@ -146,52 +139,3 @@ function portal_register_redirect( $redirect ) {
     return wc_get_page_permalink( 'shop' );
 }
 add_filter( 'woocommerce_registration_redirect', 'portal_register_redirect' );
-
-
-
-
-## OLD MENU ITEM ---------------------------------------
-
-#add_filter( 'wp_nav_menu_items', 'memberlogin_menu_item', 10, 2 );
-
-function memberlogin_menu_item ( $items, $args ) {
-// to-do change theme_location to the option.
-  if ( $args->theme_location == get_option('portal_menuname')) {
-	  global $username;
-		$slug = get_post_field( 'post_name', get_post());
-		$menuclasses = 'menu-item portal-menu-item menu-item-object-page menu-item-has-children has_sub narrow';
-
-//	$menuclasses ='menu-item menu-item-type-post_type menu-item-object-page portal-menu-item ';
-
-		if ( is_user_logged_in() ) {
-
-			$user_ID = get_current_user_id();
-			$nice_name=    get_user_meta($user_ID, 'first_name', true);
-			if( $slug =='member-portal'){ $menuclasses.='current_page_item active'; }
-
-					// create a log-out dropdown for the logged in menu
-
-					$submenu='<div style="height: 0px;" class="second"><div class="inner"><ul class="portal_dropdown">
-						<li  class="menu-item menu-item-type-post_type menu-item-object-page "><a href="'. wp_logout_url( get_permalink( woocommerce_get_page_id( 'myaccount' ) ) ) .'">Logout '.$nice_name.'</a></li>
-						<!--<li class="menu-item menu-item-type-post_type menu-item-object-page "><a href=""><i class="menu_icon blank fa"></i><span>JUST A Placeholder</span></a></li>-->
-					</ul></div></div>';
-
-			 $items .= '<li class="'.$menuclasses.'"><a href="'. get_home_url().'/'.get_option('portal_userpage_location').'"><span class="portalitem">Member Portal</span></a>'.$submenu.'</li>';
-
-
-			} else {
-
-					$submenu='<div style="height: 0px;" class="second"><div class="inner"><ul class="portal_dropdown">
-						<li  class="menu-item menu-item-type-post_type menu-item-object-page "><a href="'.get_option('portal_login_location') .'">Sign In</a></li>
-						<li class="menu-item menu-item-type-post_type menu-item-object-page "><a href="'. get_option('portal_register_location')  .'">Register</a></li>
-					</ul></div></div>';
-
-				if( $slug =='sign-in'){ $menuclasses.='current_page_item active'; }
-				 $items .= '<li class="'.$menuclasses.'"><a href="'.get_home_url().'/'.get_option('portal_userpage_location').'">Member Portal</a>'.$submenu.'</li>';
-		}
-    }
-	if ( $args->menu->slug == 'learning-portal-menu') {
-		 $items .= get_personal_portal_items();
-	}
-	return $items;
-}
