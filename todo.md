@@ -1,8 +1,7 @@
 # to do
 ### options section
-- move membership to a Woo based user system
 - go get the data table for members, the sign in page, the register page, etc.
--
+- Create Member Content blocks with Carbon Fields
 -
 - create require options
 - create menu under member Section

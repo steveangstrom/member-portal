@@ -14,13 +14,14 @@ function crb_attach_theme_options() {
 
 add_action( 'after_setup_theme', 'crb_load' );
 function crb_load() {
-    require_once( ABSPATH . '/vendor/autoload.php' );
+  $dir = plugin_dir_path( __FILE__ );
+    require_once( $dir . '/vendor/autoload.php' );
     \Carbon_Fields\Carbon_Fields::boot();
     portalmakeblock();
 }
 
 function portalmakeblock(){
-Block::make( __( 'My Portal Block' ) )
+Block::make( __( 'Member Content Block' ) )
     ->add_fields( array(
         Field::make( 'text', 'heading', __( 'Block Heading' ) ),
         Field::make( 'image', 'image', __( 'Block Image' ) ),
