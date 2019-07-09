@@ -70,9 +70,89 @@ function subscription_redirect_post() {
 //add_filter('page_template', 'portal_single_template'); //  SOON COME
 
  /**********   MENU ITEMS - Conditional adding, to avoid clash between "IF MENU" plugin and Qude plugin *******************/
+/**
+ * Simple helper function for make menu item objects
+ *
+ * @param $title      - menu item title
+ * @param $url        - menu item url
+ * @param $order      - where the item should appear in the menu
+ * @param int $parent - the item's parent item
+ * @return \stdClass
+ */
+function _custom_nav_menu_item( $title, $url, $order, $parent = 0){
+  $item = new stdClass();
+  $item->ID = 1000000 + $order + $parent;
+  $item->db_id = $item->ID;
+  $item->title = $title;
+  $item->url = $url;
+  $item->menu_order = $order;
+  $item->menu_item_parent = $parent;
+  $item->type = '';
+  $item->object = '';
+  $item->object_id = '';
+  $item->classes = array();
+  $item->target = '';
+  $item->attr_title = '';
+  $item->description = '';
+  $item->xfn = '';
+  $item->status = '';
+  return $item;
+}
 
-#menu removed in favour of the Woocommerce login.
- add_filter( 'wp_nav_menu_items', 'memberlogin_menu_item', 10, 2 );
+
+add_filter( 'wp_get_nav_menu_items', 'custom_nav_menu_member_portal', 20, 2 );
+function custom_nav_menu_member_portal( $items, $menu ) {
+	$top = _custom_nav_menu_item( 'Portal',  get_home_url().'/'.get_option('portal_userpage_location'), 100 );
+
+  if ( $menu->slug == 'test' ) { // remember to get this from options not static !
+
+	if(is_user_logged_in ()){ // if they are logged in then bother to query the page and slug for menu class hilite
+		$postslug = get_post_field( 'post_name', get_post());
+		if( $postslug =='member-portal'){ $menuclasses.='current_page_item active'; }
+			$top->classes[]='current_page_item active';
+
+	}
+
+
+
+		$items[] = $top;
+
+  if ( get_current_user_id() ){
+	    $items[] = _custom_nav_menu_item( 'More Portal',  get_home_url().'/'.get_option('portal_userpage_location'), 101, $top->ID );
+	    $items[] = _custom_nav_menu_item( 'Account Details',  get_permalink( woocommerce_get_page_id( 'myaccount' ) ), 103, $top->ID );
+	    $items[] = _custom_nav_menu_item( 'Sign Out',  wp_logout_url( get_permalink( woocommerce_get_page_id( 'myaccount' ) ) ) , 102, $top->ID );
+	  }else{
+			 $items[] = _custom_nav_menu_item( 'Sign in / Register',  get_home_url().'/'.get_option('portal_login_location'), 101, $top->ID );
+		}
+  }
+  return $items;
+}
+
+
+function portal_login_redirect( $redirect ) {
+	$redirect_page_id = url_to_postid( $redirect );
+	$checkout_page_id = wc_get_page_id( 'checkout' );
+
+	if( $redirect_page_id == $checkout_page_id ) {
+		return $redirect;
+	}
+	return get_home_url().'/'.get_option('portal_userpage_location');
+}
+
+add_filter( 'woocommerce_login_redirect', 'portal_login_redirect' );
+
+
+function portal_register_redirect( $redirect ) {
+    return wc_get_page_permalink( 'shop' );
+}
+add_filter( 'woocommerce_registration_redirect', 'portal_register_redirect' );
+
+
+
+
+## OLD MENU ITEM ---------------------------------------
+
+#add_filter( 'wp_nav_menu_items', 'memberlogin_menu_item', 10, 2 );
 
 function memberlogin_menu_item ( $items, $args ) {
 // to-do change theme_location to the option.
@@ -90,12 +170,14 @@ function memberlogin_menu_item ( $items, $args ) {
 			if( $slug =='member-portal'){ $menuclasses.='current_page_item active'; }
 
 					// create a log-out dropdown for the logged in menu
+
 					$submenu='<div style="height: 0px;" class="second"><div class="inner"><ul class="portal_dropdown">
 						<li  class="menu-item menu-item-type-post_type menu-item-object-page "><a href="'. wp_logout_url( get_permalink( woocommerce_get_page_id( 'myaccount' ) ) ) .'">Logout '.$nice_name.'</a></li>
 						<!--<li class="menu-item menu-item-type-post_type menu-item-object-page "><a href=""><i class="menu_icon blank fa"></i><span>JUST A Placeholder</span></a></li>-->
 					</ul></div></div>';
 
 			 $items .= '<li class="'.$menuclasses.'"><a href="'. get_home_url().'/'.get_option('portal_userpage_location').'"><span class="portalitem">Member Portal</span></a>'.$submenu.'</li>';
+
 
 			} else {
 

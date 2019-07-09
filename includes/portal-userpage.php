@@ -17,10 +17,22 @@
 
  */
 
+
+
+ /**
+   * Register new endpoints to use inside My Account page.
+   */
+
+  add_action( 'init', 'my_account_new_endpoints' );
+  function my_account_new_endpoints() {
+  	add_rewrite_endpoint( 'portal', EP_ROOT | EP_PAGES );
+  }
+
+
+
  function member_display_portal_content( $content ) {
 
 // if is not logged in show them a different thing ... not done yet
-
 
 	global $username;
 
@@ -29,6 +41,7 @@
 	if( $slug ==$userpage){
 		 if ( !is_user_logged_in() ) {
 			 $content = '<h2>Please sign in to the Portal</h2>';
+
 		 }else{
 
 		$user_ID = get_current_user_id();

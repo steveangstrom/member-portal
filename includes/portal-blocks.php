@@ -2,7 +2,7 @@
 use Carbon_Fields\Container;
 use Carbon_Fields\Field;
 use Carbon_Fields\Block;
-
+/*
 add_action( 'carbon_fields_register_fields', 'crb_attach_theme_options' );
 function crb_attach_theme_options() {
     Container::make( 'theme_options', __( 'Theme Options' ) )
@@ -10,7 +10,7 @@ function crb_attach_theme_options() {
             Field::make( 'text', 'crb_text', 'Text Field' ),
         ) );
 }
-
+*/
 
 add_action( 'after_setup_theme', 'crb_load' );
 function crb_load() {
