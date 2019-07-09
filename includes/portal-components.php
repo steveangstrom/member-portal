@@ -1,13 +1,8 @@
 <?php
 
-
-
 function has_bought_membership($prod_arr) {
+	#checks to see if this customer has purchases a Woo product of our membership
     $bought = false;
-
-    // Set HERE ine the array your specific target product IDs
-  //  $prod_arr = array( '3202', '3203' );
-
     // Get all customer orders
     $customer_orders = get_posts( array(
         'numberposts' => -1,
@@ -24,8 +19,6 @@ function has_bought_membership($prod_arr) {
 
         // Iterating through each current customer products bought in the order
         foreach ($order->get_items() as $item) {
-
-
             // WC 3+ compatibility
             if ( version_compare( WC_VERSION, '3.0', '<' ) )
                 $product_id = $item['product_id'];
@@ -50,7 +43,7 @@ function has_bought_membership($prod_arr) {
 
 
 function portal_show_user_status(){
-
+	#unfinished
 }
 
 
@@ -62,30 +55,7 @@ function get_personal_portal_items(){
 	return $out;
 }
 
-add_filter( 'the_content', 'portal_content_append' );
 
-function portal_content_append( $content ) {
-	// make a filter for this so users can add arbitrary content to the member portal page.
-	if (is_portal_content()){
-		$content=$content.'<br>Is portal content<br>';
-		 // $prod_arr = array( '3202', '3203' );
-		$member_product =  get_option('portal_woo_membership_product');
-		$membership_status=has_bought_membership(array(	$member_product ));
-
-		if ($membership_status['bought']){
-			 $ordertime = strtotime($membership_status['order_date']);
-			 $membership_duration = $membership_status['variation_atts']['attribute_duration'];
-			 $elapsetime = strtotime($membership_status['order_date'].'+ '.$membership_duration.' months');
-			 $elapsetimeformat = date('d-m-Y',$elapsetime);
-			 $newformat = date('d-m-Y',$ordertime);
-			$content= $content.'This user has bought membership on the date of '.$membership_status['order_date'].
-			'  and  a variation of '.$membership_status['variation_id'] .
-			 ' The original date: '.$newformat.' plus the duration of '.$membership_duration.' months means this membership elapses on '.$elapsetimeformat;
-
-		}
-	}
-	return $content;
-}
 
 /* ----------  component to get  membersip details  ------------- */
 
@@ -99,7 +69,7 @@ function get_portal_membership_status( $content='' ) {
 			 $elapsetime = strtotime($membership_status['order_date'].'+ '.$membership_duration.' months');
 			 $elapsetimeformat = date('d-m-Y',$elapsetime);
 			 $newformat = date('d-m-Y',$ordertime);
-			$content= 'This user has bought membership on the date of '.$membership_status['order_date'].
+			$content= 'This user  has bought membership on the date of '.$membership_status['order_date'].
 			'  and  a variation of '.$membership_status['variation_id'] .
 			 ' The original date: '.$newformat.' plus the duration of '.$membership_duration.' months means this membership elapses on '.$elapsetimeformat;
 	}
@@ -108,11 +78,11 @@ function get_portal_membership_status( $content='' ) {
 /* ----------  component to display  membersip details  ------------- */
 function show_portal_membership_status(  ) {
 	$content='<div class="portal_member_details portal_box">';
-	$content= get_portal_membership_status();
+	$content.= get_portal_membership_status();
 	$content.= '</div>';
-	echo $content;
+	return $content;
 }
-
+add_shortcode('membership_status', 'show_portal_membership_status');
 
 function is_portal_content(){
 	global $post;

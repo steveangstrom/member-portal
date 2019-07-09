@@ -28,20 +28,14 @@
   	add_rewrite_endpoint( 'portal', EP_ROOT | EP_PAGES );
   }
 
-
-
  function member_display_portal_content( $content ) {
-
 // if is not logged in show them a different thing ... not done yet
-
-	global $username;
-
+  global $username;
 	$slug = get_post_field( 'post_name', get_post());
   $userpage=get_option('portal_userpage_location');
 	if( $slug ==$userpage){
 		 if ( !is_user_logged_in() ) {
 			 $content = '<h2>Please sign in to the Portal</h2>';
-
 		 }else{
 
 		$user_ID = get_current_user_id();
@@ -53,7 +47,6 @@
     echo('</pre>');*/
 
 		$userdata = get_userdata( $user_ID );
-
 		$explodedEmail = explode('@', $userdata->data->user_email);
 		$user_domain = array_pop($explodedEmail);
 
@@ -66,12 +59,9 @@
 
 		// show any error messages
 
-
-
 			$head='';
 			$lowermeta='';
-
-
+      
 			if(!empty($usermeta['first_name'][0])){
 				$content = '<h3>Hi '.$usermeta['first_name'][0].',<br>Welcome to the  portal</h3>'.$content;
 			}else{
@@ -82,7 +72,7 @@
 					 $content =  '<h4>From '.$usermeta['organisation'][0].'</h4>'.$content;
 				 }
 
-   $content = get_portal_membership_status().$content;
+  // $content = get_portal_membership_status().$content;   # removed a
 
 		/*
 			if(!empty($usermeta['_last_login'][0])){
