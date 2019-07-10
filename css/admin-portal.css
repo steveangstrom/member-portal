@@ -1,10 +1,10 @@
-.cmb-type-file-list{
-	/*background:#f00;*/
-}
+
+
+
 #member_resources{background:#e5e5e5;border:1px solid #ea4646;}
 #public_resources{background:#e5e5e5;border:1px solid #46e9ea;}
 #member_resources .cmb-group-title,
-#member_resources .cmbhandle, 
+#member_resources .cmbhandle,
 #public_resources .cmb-group-title,
 #public_resources .cmbhandle
 {display:none;}

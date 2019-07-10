@@ -12,7 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) { exit;} // Exit if accessed directly.
 
 //include_once( 'includes/learning-portal-page.php' );// is a content apender// phased out in favour of template
 require_once 'includes/portal-options-menu.php';
-//require_once 'includes/portal-utilities.php';
 require_once 'includes/portal-components.php';
 require_once 'includes/portal-blocks.php';
 require_once 'includes/portal-userpage.php';
@@ -21,6 +20,7 @@ require_once ('portal-CPT.php');// include the custom post type
 
 register_deactivation_hook( __FILE__, 'flush_rewrite_rules' );
 register_activation_hook( __FILE__, 'memberportal_flush_rewrites' );
+
 function memberportal_flush_rewrites() {
 	// call your CPT registration function here (it should also be hooked into 'init')
 //	memberportal_custom_post_types_registration();
@@ -32,15 +32,16 @@ function portal_block_editor_styles() {
     wp_enqueue_style( 'portal-block-editor-styles', plugin_dir_url( __FILE__ ) . 'css/style-editor.css', false, '1.0', 'all' );
 }
 
-add_action( 'enqueue_scripts', 'pher_portal_frontendstyles', 0 );
-function pher_portal_frontendstyles(){
-	wp_enqueue_style( 'pher_portal_style', plugin_dir_url( __FILE__ ) . 'css/front-end-portal.css', array(), '0.1' );
-}
-
 add_action( 'admin_enqueue_scripts', 'pher_portal_adminstyles' );
 function pher_portal_adminstyles() {
-          wp_enqueue_style(  'pher_portal_adminstyle', plugin_dir_url( __FILE__ ) . 'css/admin-portal.css', array(), '0.1' );
+	wp_enqueue_style(  'pher_portal_adminstyle', plugin_dir_url( __FILE__ ) . 'css/admin-portal.css', array(), '0.1' );
 }
+
+add_action( 'wp_enqueue_scripts', 'pher_portal_frontendstyles' );
+function pher_portal_frontendstyles(){
+	wp_enqueue_style( 'pher_portal_style', plugin_dir_url( __FILE__ ) . '/css/front-end-portal.css',array(), '0.1.0', 'all' );
+}
+
 
 //* Redirect a user who isn't logged in AWAY from the member-portal -------- kinda important! */
 
@@ -106,7 +107,7 @@ function custom_nav_menu_member_portal( $items, $menu ) {
 
 	if(is_user_logged_in ()){ // if they are logged in then bother to query the page and slug for menu class hilite
 		$postslug = get_post_field( 'post_name', get_post());
-		if( $postslug =='member-portal'){ $menuclasses.='current_page_item active'; }
+		if( $postslug =='member-portal'){ $menuclasses.='current_page_item active'; } //  get this dynamically.
 			$top->classes[]='current_page_item active';
 	}
 		$items[] = $top;
